@@ -138,13 +138,18 @@ export const OTppage = (req, res) => {
 }
 
 export const SignOut = async (req, res) => {
-
   try {
-    res.clearCookie("uid");   // ✅ FIX
+    // Cookie ko overwrite karke expire kar dein
+    res.cookie("uid", "", {
+      path: "/",
+      expires: new Date(0), // Purani date taaki browser foran delete karde
+      httpOnly: true,
+      secure: true,        // Agar production (HTTPS) hai to true rakhein
+      sameSite: "none"     // Agar cross-site domain hai
+    });
     
     return res.status(200).render("login");
   } catch (error) {
     return res.status(500).render("login");
   }
 };
-
