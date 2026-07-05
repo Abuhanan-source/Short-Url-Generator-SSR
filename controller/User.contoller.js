@@ -140,13 +140,12 @@ export const OTppage = (req, res) => {
 export const SignOut = async (req, res) => {
   try {
     // Cookie ko overwrite karke expire kar dein
-    res.cookie("uid", "", {
-      path: "/",
-      expires: new Date(0), // Purani date taaki browser foran delete karde
-      httpOnly: true,
-      secure: true,        // Agar production (HTTPS) hai to true rakhein
-      sameSite: "none"     // Agar cross-site domain hai
-    });
+    res.cookie("uid", token, {
+  path: "/",
+  httpOnly: true,
+  secure: true,   // Vercel par iska true hona zaroori hai
+  sameSite: "lax" // Agar single domain hai to 'lax' rakhein
+});
     
     return res.status(200).render("login");
   } catch (error) {
