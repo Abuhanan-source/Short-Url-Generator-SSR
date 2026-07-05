@@ -126,8 +126,8 @@ export const OtpChecker = async (req, res) => {
 
 export const SignOut = async (req, res) => {
   try {
-    res.clearCookie("uid");   // ✅ FIX
-    
+    res.set("Cache-Control", "no-store");
+    res.clearCookie("uid");
     return res.status(200).render("login");
   } catch (error) {
     return res.status(500).render("login");
