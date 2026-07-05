@@ -124,6 +124,16 @@ export const OtpChecker = async (req, res) => {
     }
 }
 
+export const SignOut = async (req, res) => {
+  try {
+    res.clearCookie("uid");   // ✅ FIX
+    
+    return res.status(200).render("login");
+  } catch (error) {
+    return res.status(500).render("login");
+  }
+};
+
 
 export const SignUppage = (req, res) => {
     res.render("signup");
@@ -137,18 +147,3 @@ export const OTppage = (req, res) => {
     res.render("OtpPage");
 }
 
-export const SignOut = async (req, res) => {
-  try {
-    // Cookie ko overwrite karke expire kar dein
-    res.cookie("uid", token, {
-  path: "/",
-  httpOnly: true,
-  secure: true,   // Vercel par iska true hona zaroori hai
-  sameSite: "lax" // Agar single domain hai to 'lax' rakhein
-});
-    
-    return res.status(200).render("login");
-  } catch (error) {
-    return res.status(500).render("login");
-  }
-};
